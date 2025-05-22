@@ -1,0 +1,161 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: black;
+  color: #fff;
+  text-align: center;
+}
+
+nav {
+  background-color: #222;
+  padding: 1em 0;
+}
+
+nav a {
+  color: #00ffff;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.background-overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+.microphone {
+  font-size: 4em;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 3em;
+  color: #ff4c4c;
+}
+
+.subtitle {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 1.5em;
+  color: #ffa500;
+}
+
+h2 {
+  font-size: 2em;
+  color: #00ffff;
+  margin-bottom: 1em;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  font-size: 1.2em;
+  max-width: 600px;
+  margin: 0 auto 2em;
+}
+
+li {
+  margin: 10px 0;
+}
+
+p {
+  font-size: 1.1em;
+  max-width: 700px;
+  margin: 0 auto;
+  color: #ddd;
+}
+
+form {
+  max-width: 500px;
+  margin: 2em auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+input, textarea {
+  padding: 10px;
+  font-size: 1em;
+}
+
+button {
+  padding: 10px;
+  font-size: 1em;
+  background-color: #ff4c4c;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.back-button {
+  margin-top: 20px;
+}
+
+<!-- script.js -->
+function sendScheduleEmail(event) {
+  event.preventDefault();
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const date = document.getElementById("date").value;
+  const eventType = document.getElementById("eventType").value;
+  const details = document.getElementById("details").value;
+
+  const subject = encodeURIComponent("Event Scheduling Request");
+  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nDate: ${date}\nEvent Type: ${eventType}\nDetails: ${details}`);
+
+  const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=hellofajobkaraoke@gmail.com&su=${subject}&body=${body}`;
+  const defaultMailLink = `mailto:hellofajobkaraoke@gmail.com?subject=${subject}&body=${body}`;
+
+  const userChoice = confirm("Click OK to use Gmail or Cancel to use your default email app.");
+  const mailtoLink = userChoice ? gmailLink : defaultMailLink;
+
+  window.open(mailtoLink, '_blank');
+}
+
+function sendContactEmail(event) {
+  event.preventDefault();
+  const contactName = document.getElementById("contactName").value;
+  const contactEmail = document.getElementById("contactEmail").value;
+  const contactMessage = document.getElementById("contactMessage").value;
+
+  const subject = encodeURIComponent("Contact Inquiry");
+  const body = encodeURIComponent(`Name: ${contactName}\nEmail: ${contactEmail}\nMessage: ${contactMessage}`);
+
+  const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=hellofajobkaraoke@gmail.com&su=${subject}&body=${body}`;
+  const defaultMailLink = `mailto:hellofajobkaraoke@gmail.com?subject=${subject}&body=${body}`;
+
+  const userChoice = confirm("Click OK to use Gmail or Cancel to use your default email app.");
+  const mailtoLink = userChoice ? gmailLink : defaultMailLink;
+
+  window.open(mailtoLink, '_blank');
+}
+
+<!-- .github/workflows/pages.yml -->
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2
